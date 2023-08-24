@@ -108,6 +108,15 @@
     background-size: cover;
     border-radius: 50%;
   }
+
+  .msg-img-bot{
+    background-image: url(https://as2.ftcdn.net/v2/jpg/02/23/38/61/1000_F_223386120_OMJd0gW045lI3TGy4UfUDOzOKvcrDWLR.jpg);
+  }
+  
+  .msg-img-user{
+    background-image: url(https://as1.ftcdn.net/v2/jpg/06/22/88/96/1000_F_622889648_wMsxudUj3zMCbIqYG4l74q2AO8IHtCGT.jpg);
+  }
+
   .msg-bubble {
     max-width: 1250px;
     padding: 15px;

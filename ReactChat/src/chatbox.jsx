@@ -17,14 +17,15 @@ export default function Chatbox() {
   const [msgCount, setMsgCount] = useState(0);
   const [URI, setURI] = useState("");
 
-  // console.log(messages);
+  // Limit the prompts that the user can request.
+  var msgLimit = 25;
 
-  // var msgCount = 0;
   var placeholder_msg =
-    msgCount < 2
+    msgCount < msgLimit
       ? "Enter your Prompt here"
       : "You have exhausted the messaging limit.";
   console.log(msgCount);
+
   // Handle the scroll behaviour
   useEffect(() => {
     if (chatRef) {
@@ -35,10 +36,12 @@ export default function Chatbox() {
     }
   }, []);
 
+  // Open AI api
   const whisper = new WhisperSTT(
     "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"
   );
 
+  // Record voice and send to the OpenAI API.
   async function speech() {
     await whisper.startRecording();
 
@@ -52,6 +55,7 @@ export default function Chatbox() {
     }, 3000);
   }
 
+  // Set the remote API URL
   const handleApiEndpoint = async (e) => {
     e.preventDefault();
     if (URI.trim() === "") return;
@@ -59,6 +63,7 @@ export default function Chatbox() {
     if(uriResponse) alert(`The remote URI is set to ${URI}`);
   };
 
+  // logic for updating React Hooks 
   const handleSendMessage = async (e) => {
     e.preventDefault();
 
@@ -72,6 +77,8 @@ export default function Chatbox() {
     setMessages([...messages, userMessage]);
     setLoadDot(true);
     setInputMessage("");
+
+    // Handle API call to google colab. 
     const botResponse = await printResponseStream(userMessage.text);
 
     const serverResponse = {
@@ -82,7 +89,7 @@ export default function Chatbox() {
     setMessages([...messages, userMessage, serverResponse]);
   };
 
-  // setMessages([deff]);
+  
   return (
     <section className="msger">
       <div>
@@ -107,8 +114,8 @@ export default function Chatbox() {
         {messages.map((e) =>
           e.sender == "user" ? (
             <>
-              <div className="msg right-msg">
-                <div className="msg-img"></div>
+              <div key={`User ${msgCount}`} className="msg right-msg">
+                <div className="msg-img msg-img-user"></div>
                 <div className="msg-bubble">
                   <div className="msg-info">
                     <div className="msg-info-name">User</div>
@@ -120,15 +127,14 @@ export default function Chatbox() {
             </>
           ) : (
             <>
-              <div className="msg left-msg">
-                <div className="msg-img"></div>
+              <div key={`Bot ${msgCount}`} className="msg left-msg">
+                <div className="msg-img msg-img-bot"></div>
                 <div className="msg-bubble">
                   <div className="msg-info">
                     <div className="msg-info-name" onClick={speech}>
                       BOT
                     </div>
                     {/* <div className="msg-info-time">12:45</div> */}
-                    <div>$$</div>
                   </div>
                   <div className="msg-text">{e.text}</div>
                 </div>
@@ -147,11 +153,11 @@ export default function Chatbox() {
           placeholder={placeholder_msg}
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
-          disabled={msgCount > 2}
+          disabled={msgCount > msgLimit}
         />
         <button
           type="submit"
-          disabled={msgCount > 2}
+          disabled={msgCount > msgLimit}
           className="msger-send-btn"
         >
           Send
