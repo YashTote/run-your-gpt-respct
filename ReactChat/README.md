@@ -1,6 +1,8 @@
 # React ChatBot
 
-**To run the ChatBot clone this repository to your local machine. Then navigate to the ReactChat directory and run the following commands.**
+I have deployed the application on the link : [RespctBot](https://respctbot.vercel.app/)
+
+**To run the ChatBot locally clone this repository to your local machine. Then navigate to the ReactChat directory and run the following commands.**
 ```
 npm install
 ```
